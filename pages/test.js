@@ -12,7 +12,7 @@
 
   export async function getServerSideProps() {
     let { data } = await supabase.from('countries').select()
-
+    console.log(supabase);
     return {
       props: {
        countries: data
