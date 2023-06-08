@@ -1,10 +1,9 @@
 //database route
 import { supabase } from "../lib/supabaseClient";
-import * as fs from "fs";
 // let fs = require("fs");
-export function handler(req, res) {
+export default function handler(req, res) {
   let finput = "./data/user-data.csv";
-
+  let fs = require("fs");
   try {
     const data = fs.readFileSync(finput, "utf8");
     data.split(/r?\n/).forEach((line) => {
@@ -18,7 +17,7 @@ export function handler(req, res) {
   }
 }
 
-export default function Page({ userdata }) {
+export function Page({ userdata }) {
   return (
     <ul>
       {userdata.map((userdatas) => (
