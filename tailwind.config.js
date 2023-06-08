@@ -16,14 +16,35 @@ module.exports = {
         '3%': '-29%',
         '3l': '-12.7rem',
         '3i': '-0.8rem',
+        'first': '-170px',
 
       },
       padding: {
         '5re': '6rem',
         '7re': '6.7rem',
+        '4.7re': '4.7rem',
       },
       left : {
         '24%': '24%',
+        '50%': '50%',
+      },
+      backgroundColor: {
+        'rose':'#DF80AC',
+        'blues': '#579FF4',
+        'yellows':'#FCB325',
+        'greens':'#098E27',
+      },
+      translate: {
+        '50%': '50%',
+      },
+      borderRadius: {
+        '7xl': '7.5rem',
+      },
+      animation: {
+        spin: 'spin 4s linear infinite',
+      },
+      width: {
+        '3/10': '40%',
       },
     },
   },
