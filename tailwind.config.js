@@ -23,6 +23,7 @@ module.exports = {
         '5re': '6rem',
         '7re': '6.7rem',
         '4.7re': '4.7rem',
+        '8re':'8.6rem'
       },
       left : {
         '24%': '24%',
@@ -34,8 +35,9 @@ module.exports = {
         'yellows':'#FCB325',
         'greens':'#098E27',
       },
-      translate: {
-        '50%': '50%',
+      spacing: {
+        '246': '70%',
+        '267':'89%'
       },
       borderRadius: {
         '7xl': '7.5rem',
@@ -45,6 +47,7 @@ module.exports = {
       },
       width: {
         '3/10': '40%',
+        '19':'19%'
       },
     },
   },
