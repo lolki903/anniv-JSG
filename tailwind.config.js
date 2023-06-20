@@ -17,6 +17,9 @@ module.exports = {
         '3l': '-12.7rem',
         '3i': '-0.8rem',
         'first': '-170px',
+        '84':'73%',
+        '80':'80%',
+        '4l':'-0.6rem'
 
       },
       padding: {

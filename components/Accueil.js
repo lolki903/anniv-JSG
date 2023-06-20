@@ -13,7 +13,7 @@ const Accueil = () => {
         return () => clearInterval(interval);
     }, [color]);
     return (
-        <div className="flex ">
+        <div className="flex">
             <div className="grid grid-cols-2 gap-4">
                 <Birthday color={colors} />
                 <Perso color={colors} />
