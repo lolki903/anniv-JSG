@@ -8,13 +8,21 @@ import Image from "next/image";
 const Perso = ({color}) => {
     const[icon, setIcon] = useState();
     const array = [coeur, egg, flower, pen];
+    const array2 = ["w-2/12","w-5/12","w-7/12"]
+    const [width,setWidth] = useState("")
+    const [index, setIndex] = useState(0);
+
     useEffect(() => {
         const interval = setInterval(() => {
             const random = Math.floor(Math.random() * array.length);
+            const newIndex = (index + 1) % array2.length; // Calcule le nouvel index en incrémentant l'index actuel
             setIcon(array[random]);
-        }, 1000);
+            setWidth(array2[newIndex]);
+            setIndex(newIndex); // Met à jour l'index avec la nouvelle valeur
+        }, 2000);
         return () => clearInterval(interval);
-    }, [icon]);
+    }, [index]);
+    
     return (
         <div className="pt-8 px-5">
             <div className="mb-20">
@@ -31,6 +39,9 @@ const Perso = ({color}) => {
             </div>
             <div className={`${color} border-2 p-7re rounded-xl  mt-3l ml-3i mr-20 z-0`}>
             </div>
+        </div>
+        <div className={`bg-rose ${width} p-7 rounded-2xl`}>
+
         </div>
     </div>
     );
