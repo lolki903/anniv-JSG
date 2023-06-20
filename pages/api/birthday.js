@@ -1,16 +1,22 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-  import { supabase } from './../../lib/supabaseClient';
-
+import { supabase } from "./../../lib/supabaseClient";
 
 export default async function handler(req, res) {
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1; // Mois indexés à partir de 0
 
-   let { data } = await supabase.from('userdata').select().eq('birthdate', new Date().toLocaleDateString())
+  let { data, error } = await supabase.rpc("get_birthdays_by_day_and_month", {
+    day: day,
+    month: month,
+  });
 
-   // ce que tu a maintenant : , ca te retourne les donné dont la date birthdate est = a la date du jour (jour + mois + année)
+  if (error) {
+    console.log("Error fetching data:", error);
+    res.status(500).json({ error: "An error occurred while fetching data" });
+    return;
+  }
 
-   // ce que tu dois faire : ca te retourne la donnée dont la date birthdate est = a la date du jour (jour + mois) (année pas prise en compte)
-
-   // le eq() c'est comme un where en sql 
-
-  res.status(200).json(data)
+  console.log(data);
+  res.status(200).json(data);
 }
