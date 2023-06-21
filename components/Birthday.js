@@ -1,13 +1,12 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import axios from "axios";
 import roundbirthday from "../assets/roundbirthday.svg";
 import ombre from "../assets/ombre.svg";
 import star from "../assets/star.svg"
 
 
-const Birthday = ({color}) => {
-    const [prenom ,setPrenom] = useState("Jules")
-    const [nom ,setNom] = useState("Jules")
+const Birthday = ({color,prenom,nom}) => {
 
     return (
         <div className={`${color} w-full flex flex-col relative`}>

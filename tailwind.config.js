@@ -16,17 +16,17 @@ module.exports = {
         '3%': '-29%',
         '3l': '-12.7rem',
         '3i': '-0.8rem',
-        'first': '-170px',
+        'first': '-146px',
         '84':'73%',
         '80':'80%',
         '4l':'-0.6rem'
 
       },
       padding: {
-        '5re': '6rem',
+        '5re': '5rem',
         '7re': '6.7rem',
         '4.7re': '4.7rem',
-        '8re':'8.6rem'
+        '8re':'11rem'
       },
       left : {
         '24%': '24%',
@@ -40,7 +40,7 @@ module.exports = {
       },
       spacing: {
         '246': '70%',
-        '267':'89%'
+        '267':'92%'
       },
       borderRadius: {
         '7xl': '7.5rem',
