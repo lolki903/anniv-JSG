@@ -6,19 +6,17 @@ import cron from "node-cron";
 import moment from "moment-timezone";
 
 const sendMail = async () => {
-
   let studentsResults = null;
-  
-  await getData().then(
-    (data) => {
+
+  await getData()
+    .then((data) => {
       studentsResults = data;
-    }
-  ).catch((error) =>  {
-    console.log("Error fetching data:", error);
-    res.status(500).json({ error: "An error occurred while fetching data" })
-    return;
-  });
-  
+    })
+    .catch((error) => {
+      console.log("Error fetching data:", error);
+      res.status(500).json({ error: "An error occurred while fetching data" });
+      return;
+    });
 
   const transporter = nodemailer.createTransport({
     port: 465,
@@ -32,7 +30,7 @@ const sendMail = async () => {
 
   for (const student of studentsResults) {
     await transporter.sendMail({
-      from: `"Mon école" <${process.env.MAIL_USER}>`, // Expéditeur
+      from: `"Mon école digitale" <${process.env.MAIL_USER}>`, // Expéditeur
       to: student.email, // Destinataire
       subject: "Joyeux anniversaire!", // Sujet
       text: `Joyeux anniversaire, ${student.firstname} ${student.lastname}!`, // Corps du courrier électronique
@@ -46,31 +44,36 @@ const sendMail = async () => {
 };
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  getData().then(
-    (data) =>{
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+
+  getData()
+    .then((data) => {
       // console.log(data);
       res.status(200).json(data);
-    }
-
-  ).catch((error) =>  {
-    console.log("Error fetching data:", error);
-    res.status(500).json({ error: "An error occurred while fetching data" })
-    return;
-  });
+    })
+    .catch((error) => {
+      console.log("Error fetching data:", error);
+      res.status(500).json({ error: "An error occurred while fetching data" });
+      return;
+    });
 }
 
 // Planification de l'envoi d'e-mails à 8h du matin (heure française)
-cron.schedule('0 8 * * *', () => {
-   const franceTime = moment().tz('Europe/Paris');
-    if (franceTime.hour() === 8 && franceTime.minute() === 0) {
-        sendMail().then(r => console.log(r));
-    }
+cron.schedule("0 8 * * *", () => {
+  const franceTime = moment().tz("Europe/Paris");
+  if (franceTime.hour() === 8 && franceTime.minute() === 0) {
+    sendMail().then((r) => console.log(r));
+  }
 });
 
-
 const getData = async () => {
-
   const currentDate = new Date();
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1; // Mois indexés à partir de 0
@@ -81,5 +84,4 @@ const getData = async () => {
   });
 
   return data;
-
-}
+};
