@@ -30,7 +30,7 @@ const Birthday = ({color}) => {
                 </div>
             </div>
             <div className="w-full flex justify-center">
-                <h1 className="text-4xl uppercase">
+                <h1 className="text-6xl uppercase font-extrabold">
                     {prenom} {nom}
                 </h1>
             </div>
