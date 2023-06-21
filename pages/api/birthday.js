@@ -40,6 +40,7 @@ export default async function handler(req, res) {
    // ce que tu dois faire : ca te retourne la donnée dont la date birthdate est = a la date du jour (jour + mois) (année pas prise en compte)
 
    // le eq() c'est comme un where en sql 
+   console.log(data)
 
   res.status(200).json(data)
 }
