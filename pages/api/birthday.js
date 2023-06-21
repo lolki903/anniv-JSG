@@ -1,55 +1,59 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-  import { supabase } from './../../lib/supabaseClient';
+import { supabase } from "./../../lib/supabaseClient";
 
-import nodemailer from 'nodemailer';
-import cron from 'node-cron';
-import moment from 'moment-timezone';
-
+import nodemailer from "nodemailer";
+import cron from "node-cron";
+import moment from "moment-timezone";
 
 const sendBirthdayEmails = async () => {
-    
-    const transporter = nodemailer.createTransport({
-        port: 465,
-        host: 'node38-eu.n0c.com',
-        secure: true,
-        auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS,
-        },
+  const transporter = nodemailer.createTransport({
+    port: 465,
+    host: "node38-eu.n0c.com",
+    secure: true,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+
+  for (const student of studentsResults) {
+    await transporter.sendMail({
+      from: `"Mon école" <${process.env.MAIL_USER}>`, // Expéditeur
+      to: student.email, // Destinataire
+      subject: "Joyeux anniversaire!", // Sujet
+      text: `Joyeux anniversaire, ${student.firstname} ${student.lastname}!`, // Corps du courrier électronique
+      html: `<p>Joyeux anniversaire, ${student.firstname} ${student.lastname}!</p>`, // Corps du courrier électronique en HTML
     });
+  }
 
-    for (const student of studentsResults) {
-        await transporter.sendMail({
-            from: `"Mon école" <${process.env.MAIL_USER}>`, // Expéditeur
-            to: student.email, // Destinataire
-            subject: 'Joyeux anniversaire!', // Sujet
-            text: `Joyeux anniversaire, ${student.firstname} ${student.lastname}!`, // Corps du courrier électronique
-            html: `<p>Joyeux anniversaire, ${student.firstname} ${student.lastname}!</p>`, // Corps du courrier électronique en HTML
-        });
-    }
-
-    console.log('Birthday emails sent!');
-}
+  console.log("Birthday emails sent!");
+};
 
 export default async function handler(req, res) {
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1; // Mois indexés à partir de 0
 
-   let { data } = await supabase.from('userdata').select().eq('birthdate', new Date().toLocaleDateString())
+  let { data, error } = await supabase.rpc("get_birthdays_by_day_and_month", {
+    day: day,
+    month: month,
+  });
 
-   // ce que tu a maintenant : , ca te retourne les donné dont la date birthdate est = a la date du jour (jour + mois + année)
+  if (error) {
+    console.log("Error fetching data:", error);
+    res.status(500).json({ error: "An error occurred while fetching data" });
+    return;
+  }
 
-   // ce que tu dois faire : ca te retourne la donnée dont la date birthdate est = a la date du jour (jour + mois) (année pas prise en compte)
+  console.log(data);   console.log(data)
 
-   // le eq() c'est comme un where en sql 
-   console.log(data)
-
-  res.status(200).json(data)
+  res.status(200).json(data);
 }
 
-
 // Planification de l'envoi d'e-mails à 8h du matin (heure française)
-cron.schedule('0 8 * * *', () => {
-    const franceTime = moment().tz('Europe/Paris');
-    if (franceTime.hour() === 8 && franceTime.minute() === 0) {
-        sendBirthdayEmails().then(r => console.log(r));
-    }
+cron.schedule("0 8 * * *", () => {
+  const franceTime = moment().tz("Europe/Paris");
+  if (franceTime.hour() === 8 && franceTime.minute() === 0) {
+    sendBirthdayEmails().then((r) => console.log(r));
+  }
 });
